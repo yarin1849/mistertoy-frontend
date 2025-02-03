@@ -51,6 +51,18 @@ export function ToyFilter({ filterBy, onSetFilter }) {
                     onChange={handleChange}
                 />
 
+                <label htmlFor="inStock">In Stock:</label>
+                <select
+                    id="inStock"
+                    name="inStock"
+                    value={filterByToEdit.inStock || ''}
+                    onChange={handleChange}
+                >
+                    <option value="">All</option>
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                </select>
+
             </form>
 
         </section>

@@ -24,19 +24,48 @@ export const toyService = {
 }
 
 
+// function query(filterBy = {}) {
+//     if (!filterBy.txt) filterBy.txt = ''
+//     if (!filterBy.maxPrice) filterBy.maxPrice = Infinity
+//     // if (!filterBy.inStock) filterBy.inStock = ''
+//     // if (!filterBy.minPrice) filterBy.minPrice = -Infinity
+//     const regExp = new RegExp(filterBy.txt, 'i')
+//     return storageService.query(TOY_KEY)
+//         .then(toys => {
+//             return toys.filter(toy =>
+//                 regExp.test(toy.name) &&
+//                 toy.price <= filterBy.maxPrice
+//                 // toy.inStock === inStock
+//             )
+//         })
+// }
+
 function query(filterBy = {}) {
-    if (!filterBy.txt) filterBy.txt = ''
-    if (!filterBy.maxPrice) filterBy.maxPrice = Infinity
-    const regExp = new RegExp(filterBy.txt, 'i')
     return storageService.query(TOY_KEY)
         .then(toys => {
-            // if (!toys.length) {
-            //     toys = _createToys()
-            // }
-            return toys.filter(toy =>
-                regExp.test(toy.name) &&
-                toy.price <= filterBy.maxPrice
-            )
+            if (filterBy.txt) {
+                const regExp = new RegExp(filterBy.txt, 'i')
+                toys = toys.filter(toy => regExp.test(toy.name))
+            }
+
+            if (filterBy.maxPrice) {
+                toys = toys.filter(toy => toy.price <= filterBy.maxPrice)
+            }
+
+            if (filterBy.minPrice) {
+                toys = toys.filter(toy => toy.price >= filterBy.minPrice)
+            }
+
+            if (filterBy.inStock === 'true') {
+                console.log('filterBy', filterBy)
+                toys = toys.filter(toy => toy.inStock === true)
+            }
+
+            if (filterBy.inStock === 'false') {
+                toys = toys.filter(toy => toy.inStock === false)
+            }
+
+            return toys
         })
 }
 
@@ -76,7 +105,7 @@ function getRandomToy() {
 }
 
 function getDefaultFilter() {
-    return { txt: '', maxPrice: '' }
+    return { txt: '', maxPrice: '', inStock: '' }
 }
 
 // function _createToys() {
