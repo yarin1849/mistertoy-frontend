@@ -70,6 +70,9 @@ export function ToyIndex() {
         showSuccessMsg('Added to Cart')
     }
 
+    console.log('toys', toys)
+    if (!toys.length) return 'loading'
+
     return (
         <div>
             <h3>Toys App</h3>
