@@ -46,7 +46,7 @@ function getDefaultFilter() {
         inStock: null,
         labels: [],
         pageIdx: 0,
-        sortBy: { type: '', sortDir: 1 },
+        // sortBy: { type: '', sortDir: 1 },
     }
 }
 

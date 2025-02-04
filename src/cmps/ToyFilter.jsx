@@ -2,7 +2,10 @@
 
 import { useEffect, useRef, useState } from "react"
 import { utilService } from "../services/util.service.js"
+import { toyService } from "../services/toy.service.js"
 
+
+const toyLabels = toyService.getToyLabels()
 
 export function ToyFilter({ filterBy, onSetFilter }) {
 
@@ -22,6 +25,7 @@ export function ToyFilter({ filterBy, onSetFilter }) {
 
     function handleMultiSelectChange({ target }) {
         const selectedOptions = Array.from(target.selectedOptions).map(opt => opt.value)
+        console.log('selectedOptions', selectedOptions)
         setFilterByToEdit((prevFilter) => ({ ...prevFilter, labels: selectedOptions }))
     }
 
@@ -76,11 +80,13 @@ export function ToyFilter({ filterBy, onSetFilter }) {
                     value={filterByToEdit.labels || []}
                     onChange={handleMultiSelectChange}
                 >
-                    <option value="All">All</option>
-                    <option value="Doll">Doll</option>
-                    <option value="Battery Powered">Battery Powered</option>
-                    <option value="Baby">Baby</option>
+                    {toyLabels.map(label => (
+                        <option key={label} value={label}>
+                            {label}
+                        </option>
+                    ))}
                 </select>
+
 
             </form>
 

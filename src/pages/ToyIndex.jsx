@@ -18,7 +18,6 @@ export function ToyIndex() {
     const toys = useSelector(storeState => storeState.toyModule.toys)
     const filterBy = useSelector(storeState => storeState.toyModule.filterBy)
     const isLoading = useSelector(storeState => storeState.toyModule.isLoading)
-    // console.log('toys:', toys)
     useEffect(() => {
         loadToys()
             .catch(err => {
@@ -70,8 +69,6 @@ export function ToyIndex() {
         showSuccessMsg('Added to Cart')
     }
 
-    console.log('toys', toys)
-    if (!toys.length) return 'loading'
 
     return (
         <div>
