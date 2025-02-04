@@ -20,6 +20,11 @@ export function ToyFilter({ filterBy, onSetFilter }) {
         setFilterByToEdit((prevFilter) => ({ ...prevFilter, [field]: value }))
     }
 
+    function handleMultiSelectChange({ target }) {
+        const selectedOptions = Array.from(target.selectedOptions).map(opt => opt.value)
+        setFilterByToEdit((prevFilter) => ({ ...prevFilter, labels: selectedOptions }))
+    }
+
     return (
         <section className="toy-filter full main-layout">
             <h2>Toys Filter</h2>
@@ -61,6 +66,20 @@ export function ToyFilter({ filterBy, onSetFilter }) {
                     <option value="">All</option>
                     <option value="true">Yes</option>
                     <option value="false">No</option>
+                </select>
+
+                <label htmlFor="labels">Toy Labels:</label>
+                <select
+                    id="labels"
+                    name="labels"
+                    multiple
+                    value={filterByToEdit.labels || []}
+                    onChange={handleMultiSelectChange}
+                >
+                    <option value="All">All</option>
+                    <option value="Doll">Doll</option>
+                    <option value="Battery Powered">Battery Powered</option>
+                    <option value="Baby">Baby</option>
                 </select>
 
             </form>
