@@ -1,3 +1,4 @@
+import { storageService } from './async-storage.service'
 import { httpService } from './http.service'
 
 const BASE_URL = 'toy/'
@@ -70,4 +71,30 @@ function _getRandomLabels() {
         randomLabels.push(labelsCopy.splice(randomIdx, 1)[0])
     }
     return randomLabels
+}
+
+function getLabelsStats() {
+    return httpService.query(BASE_URL)
+        .then(toys => {
+            const toyCountByLabelsMap = _getToyCountByLabelsMap(toys)
+            console.log('toyCountBylabelsMap:', toyCountByLabelsMap)
+            const data = Object.keys(toyCountByLabelsMap)
+                .map(labels =>
+                ({
+                    title: labels,
+                    value: Math.round((toyCountByLabelsMap[labels] / toys.length) * 100)
+                }))
+            // console.log('data:', data)
+            return data
+        })
+}
+
+function _getToyCountByLabelsMap(toys) {
+    // console.log('toys:', toys)
+    const toyCountByLabelsMap = toys.reduce((map, toy) => {
+        if (!map[toy.labels]) map[toy.labels] = 0
+        map[toy.labels]++
+        return map
+    }, {})
+    return toyCountByLabelsMap
 }

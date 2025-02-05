@@ -20,7 +20,6 @@ const initialState = {
     filterBy: toyService.getDefaultFilter(),
     shoppingCart: [],
     isCartShown: false,
-
 }
 
 export function toyReducer(state = initialState, cmd = {}) {

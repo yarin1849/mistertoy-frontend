@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react"
 import { utilService } from "../services/util.service.js"
 import { toyService } from "../services/toy.service.js"
+import { ToySort } from "./ToySort.jsx"
+import MultipleSelectCheckmarks from "./MultipleSelectCheckmarks.jsx"
 
 
 const toyLabels = toyService.getToyLabels()
@@ -73,6 +75,8 @@ export function ToyFilter({ filterBy, onSetFilter }) {
                 </select>
 
                 <label htmlFor="labels">Toy Labels:</label>
+                <MultipleSelectCheckmarks sortBy={filterBy.sortBy} onSetFilter={onSetFilter} />
+                {/* <label htmlFor="labels">Toy Labels:</label>
                 <select
                     id="labels"
                     name="labels"
@@ -85,10 +89,13 @@ export function ToyFilter({ filterBy, onSetFilter }) {
                             {label}
                         </option>
                     ))}
-                </select>
-
-
+                </select> */}
             </form>
+            {/* <select>
+                <form>
+                    <ToySort sortBy={filterBy.sortBy} onSetFilter={onSetFilter} />
+                </form>
+            </select> */}
 
         </section>
     )
