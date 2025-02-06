@@ -4,7 +4,7 @@ import GoogleMapReact from 'google-map-react';
 export default function GoogleMap() {
     const [center, setCenter] = useState({ lat: 32.040521451921904, lng: 34.77233961910294 })
 
-    const zoom = 11
+    const zoom = 8
 
     const storesLocations = [
         { lat: 32.040521451921904, lng: 34.77233961910294 },
