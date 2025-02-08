@@ -6,6 +6,8 @@ import { logout } from '../store/actions/user.actions.js'
 import { TOGGLE_CART_IS_SHOWN } from '../store/reducers/toy.reducer.js'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
+import { useState } from "react"
+
 
 // const { NavLink } = ReactRouterDOM
 // const { useSelector, useDispatch } = ReactRedux
@@ -13,8 +15,7 @@ import { NavLink } from 'react-router-dom'
 export function AppHeader() {
     const dispatch = useDispatch()
     const user = useSelector(storeState => storeState.userModule.loggedInUser)
-    // console.log('user:', user)
-
+    const [isMenuOpen, setIsMenuOpen] = useState(false)
     function onLogout() {
         logout()
             .then(() => {
@@ -32,17 +33,23 @@ export function AppHeader() {
         dispatch({ type: TOGGLE_CART_IS_SHOWN })
     }
 
+    function onToggleMenu() {
+        // console.log('prevStateBefore', prevState)
+        setIsMenuOpen(prevState => !prevState)
+        // console.log('prevStateAfter', prevState)
+    }
+
     return (
         <header className="app-header full main-layout">
             <section className="header-container">
                 <h1>React Toy App</h1>
-                <nav className="app-nav">
+                <button className='menu-btn' onClick={onToggleMenu}>☰</button>
+                <nav className={`app-nav${isMenuOpen ? '-open' : ''}`}>
                     <NavLink to="/" >Home</NavLink>
                     <NavLink to="/about" >About</NavLink>
                     <NavLink to="/toy" >Toys</NavLink>
                     <NavLink to="/dashboard" >dashboard</NavLink>
                     <a onClick={onToggleCart} href="#">🛒 Cart</a>
-
                 </nav>
             </section>
             {user ? (

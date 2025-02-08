@@ -2,15 +2,49 @@
     background-color: var(--clr1);
     color: var(--clr1bg);
     padding-block: 1em;
-
+    // display: flex;
+    // justify-items: end;
+    position: relative;
 
 }
 
 .app-nav {
     display: flex;
+    flex-direction: row;
     gap: 15px;
 
     @include for-mobile-layout {
         display: none;
+        position: relative;
+        &-open {
+            display: flex;
+            position: absolute;
+            flex-direction: column;
+            width: 80%;
+            top: 0;
+            left: 0;
+            
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            background-color: var(--clr2bg);
+            border-radius: 5px;
+
+        }
+    }
+
+
+}
+
+.menu-btn{
+    display: none;
+    
+    @include for-mobile-layout {
+        display: flex;
+        justify-self: end;
+        position: absolute;
+        margin-left: 80%;
+        top: 20px;
+
+        
     }
 }
+

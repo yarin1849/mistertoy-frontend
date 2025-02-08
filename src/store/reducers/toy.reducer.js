@@ -49,6 +49,8 @@ export function toyReducer(state = initialState, cmd = {}) {
             return { ...state, toys, lastToys: state.toys }
         case SET_FILTER_BY:
             console.log('cmd.filterBy', cmd.filterBy)
+            console.log('toy.reducer')
+
             return {
                 ...state,
                 filterBy: { ...state.filterBy, ...cmd.filterBy }

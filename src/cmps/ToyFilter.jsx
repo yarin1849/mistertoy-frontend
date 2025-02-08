@@ -23,6 +23,7 @@ export function ToyFilter({ filterBy, onSetFilter }) {
         let { value, name: field, type } = target
         value = type === 'number' ? +value : value
         setFilterByToEdit((prevFilter) => ({ ...prevFilter, [field]: value }))
+        // console.log('target', target)
     }
 
     function handleMultiSelectChange({ target }) {

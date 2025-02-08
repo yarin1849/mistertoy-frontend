@@ -23,7 +23,7 @@ export default function GoogleMap() {
         // Important! Always set the container height explicitly
         <div style={{ height: '70vh', width: '100%' }}>
             <GoogleMapReact
-                bootstrapURLKeys={{ key: "AIzaSyA5YAKbctMWmj2etXv-KY7MSXDMGaWr0qs" }}
+                bootstrapURLKeys={{ key: "" }}
                 center={center}
                 storesLocations={storesLocations}
                 defaultZoom={zoom}
