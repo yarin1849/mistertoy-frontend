@@ -12,11 +12,15 @@ import { AppFooter } from './cmps/AppFooter.jsx'
 import { HomePage } from './pages/HomePage.jsx'
 import { AboutUs } from './pages/AboutUs.jsx'
 import { ToyIndex } from './pages/ToyIndex.jsx'
+import { ReviewIndex } from './pages/ReviewIndex.jsx'
 import { store } from './store/store.js'
 import { ToyEdit } from './pages/ToyEdit.jsx'
 import { ToyDetails } from './pages/ToyDetails.jsx'
 import { UserDetails } from './pages/UserDetails.jsx'
 import { Dashboard } from './pages/Dashboard.jsx'
+import { LoginSignup } from './pages/loginSignup.jsx'
+import { Login } from './pages/Login.jsx'
+import { Signup } from './pages/signUp.jsx'
 
 
 export function App() {
@@ -35,7 +39,12 @@ export function App() {
               {/* <Route element={<ToyEdit />} path="/toy/edit" /> */}
               <Route element={<ToyEdit />} path="/toy/edit/:toyId?" />
               <Route element={<ToyDetails />} path="/toy/:toyId" />
+              <Route path="review" element={<ReviewIndex />} />
               <Route element={<UserDetails />} path="/user/:userId" />
+              <Route path="login" element={<LoginSignup />}>
+                <Route index element={<Login />} />
+                <Route path="signup" element={<Signup />} />
+              </Route>
             </Routes>
           </main>
           <AppFooter />

@@ -37,10 +37,19 @@ function remove(toyId) {
     return httpService.delete(BASE_URL + toyId)
 }
 
+// function save(toy) {
+//     const method = toy._id ? 'put' : 'post'
+//     return httpService[method](BASE_URL, toy)
+// }
+
 function save(toy) {
-    const method = toy._id ? 'put' : 'post'
-    return httpService[method](BASE_URL, toy)
+    if (toy._id) {
+        return httpService.put(BASE_URL + toy._id, toy)
+    } else {
+        return httpService.post(BASE_URL, toy)
+    }
 }
+
 
 function getDefaultFilter() {
     return {
@@ -74,21 +83,21 @@ function _getRandomLabels() {
     return randomLabels
 }
 
-function getLabelsStats() {
-    return httpService.query(BASE_URL)
-        .then(toys => {
-            const toyCountByLabelsMap = _getToyCountByLabelsMap(toys)
-            console.log('toyCountBylabelsMap:', toyCountByLabelsMap)
-            const data = Object.keys(toyCountByLabelsMap)
-                .map(labels =>
-                ({
-                    title: labels,
-                    value: Math.round((toyCountByLabelsMap[labels] / toys.length) * 100)
-                }))
-            // console.log('data:', data)
-            return data
-        })
-}
+// function getLabelsStats() {
+//     return httpService.query(BASE_URL)
+//         .then(toys => {
+//             const toyCountByLabelsMap = _getToyCountByLabelsMap(toys)
+//             console.log('toyCountBylabelsMap:', toyCountByLabelsMap)
+//             const data = Object.keys(toyCountByLabelsMap)
+//                 .map(labels =>
+//                 ({
+//                     title: labels,
+//                     value: Math.round((toyCountByLabelsMap[labels] / toys.length) * 100)
+//                 }))
+//             // console.log('data:', data)
+//             return data
+//         })
+// }
 
 function _getToyCountByLabelsMap(toys) {
     // console.log('toys:', toys)

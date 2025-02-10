@@ -23,13 +23,14 @@ const initialState = {
 }
 
 export function toyReducer(state = initialState, cmd = {}) {
+    let toys
 
     switch (cmd.type) {
         //* Toys
         case SET_TOYS:
             return {
                 ...state,
-                toys: cmd.toys.toys
+                toys: cmd.toys
             }
         case ADD_TOY:
             return {
@@ -44,7 +45,7 @@ export function toyReducer(state = initialState, cmd = {}) {
             }
         case UPDATE_TOY:
             toys = state.toys.map(toy =>
-                toy._id === action.toy._id ? action.toy : toy
+                toy._id === cmd.toy._id ? cmd.toy : toy
             )
             return { ...state, toys, lastToys: state.toys }
         case SET_FILTER_BY:

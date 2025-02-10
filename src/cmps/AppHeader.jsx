@@ -5,7 +5,7 @@ import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
 import { logout } from '../store/actions/user.actions.js'
 import { TOGGLE_CART_IS_SHOWN } from '../store/reducers/toy.reducer.js'
 import { useDispatch, useSelector } from 'react-redux'
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useState } from "react"
 
 
@@ -13,17 +13,17 @@ import { useState } from "react"
 // const { useSelector, useDispatch } = ReactRedux
 
 export function AppHeader() {
-    const dispatch = useDispatch()
     const user = useSelector(storeState => storeState.userModule.loggedInUser)
     const [isMenuOpen, setIsMenuOpen] = useState(false)
-    function onLogout() {
-        logout()
-            .then(() => {
-                showSuccessMsg('logout successfully')
-            })
-            .catch((err) => {
-                showErrorMsg('OOPs try again')
-            })
+    const navigate = useNavigate()
+    async function onLogout() {
+        try {
+            await logout()
+            navigate('/')
+            showSuccessMsg(`Bye now`)
+        } catch (err) {
+            showErrorMsg('Cannot logout')
+        }
     }
 
 
@@ -49,10 +49,25 @@ export function AppHeader() {
                     <NavLink to="/about" >About</NavLink>
                     <NavLink to="/toy" >Toys</NavLink>
                     <NavLink to="/dashboard" >dashboard</NavLink>
+                    <NavLink to="/review">Review</NavLink>
                     <a onClick={onToggleCart} href="#">🛒 Cart</a>
+
+
+                    {!user && <NavLink to="login" className="login-link">Login</NavLink>}
+
+                    {user && (
+                        <div className="user-info">
+                            <Link to={`user/${user._id}`}>
+                                {user.imgUrl && <img src={user.imgUrl} />}
+                                {user.fullname}
+                            </Link>
+                            {/* <span className="score">{user.score?.toLocaleString()}</span> */}
+                            <button onClick={onLogout}>logout</button>
+                        </div>
+                    )}
                 </nav>
             </section>
-            {user ? (
+            {/* {user ? (
                 < section >
                     <span to={`/user/${user._id}`}>Hello {user.fullname} <span>${user.score.toLocaleString()}</span></span>
                     <button onClick={onLogout}>Logout</button>
@@ -61,7 +76,7 @@ export function AppHeader() {
                 <section>
                     <LoginSignup />
                 </section>
-            )}
+            )} */}
             <UserMsg />
         </header>
     )

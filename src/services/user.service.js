@@ -1,81 +1,72 @@
-import { storageService } from './async-storage.service.js'
-
-const STORAGE_KEY = 'userDB'
-const STORAGE_KEY_LOGGEDIN = 'loggedinUser'
+import { httpService } from './http.service'
 
 export const userService = {
     login,
-    logout,
     signup,
-    getById,
-    getLoggedinUser,
-    updateScore,
-    getEmptyCredentials
+    logout,
+    getUsers,
+    getLoggedInUser,
+    getEmptyCredentials,
 }
 
+const BASE_URL = 'auth/'
+const STORAGE_KEY = 'loggedinUser'
 
-function getById(userId) {
-    return storageService.get(STORAGE_KEY, userId)
-}
+async function login({ username, password }) {
 
-function login({ username, password }) {
-    return storageService.query(STORAGE_KEY)
-        .then(users => {
-            console.log('users:', users)
-            const user = users.find(user => user.username === username)
-            // if (user && user.password !== password) return _setLoggedinUser(user)
-            if (user) return _setLoggedinUser(user)
-            else return Promise.reject('Invalid login')
+    try {
+        const user = await httpService.post(BASE_URL + 'login', {
+            username,
+            password,
         })
+        console.log('hi');
+        _setLoggedInUser(user)
+        return user
+    } catch (error) {
+        console.log('Could not login')
+    }
 }
 
-function signup({ username, password, fullname }) {
-    const user = { username, password, fullname, score: 10000 }
-    return storageService.post(STORAGE_KEY, user)
-        .then(_setLoggedinUser)
+async function signup(credentials) {
+    try {
+        const user = await httpService.post(BASE_URL + 'signup', credentials)
+        _setLoggedInUser(user)
+        return user
+    } catch (err) {
+        console.log('Could not signup')
+    }
 }
 
-function updateScore(diff) {
-    const loggedInUserId = getLoggedinUser()._id
-    return userService.getById(loggedInUserId)
-        .then(user => {
-            if (user.score + diff < 0) return Promise.reject('No credit')
-            user.score += diff
-            return storageService.put(STORAGE_KEY, user)
-        })
-        .then(user => {
-            _setLoggedinUser(user)
-            return user.score
-        })
+async function logout() {
+    try {
+        await httpService.post(BASE_URL + 'logout')
+        sessionStorage.removeItem(STORAGE_KEY)
+    } catch (error) {
+        console.log('Could not logout')
+    }
 }
 
-function logout() {
-    sessionStorage.removeItem(STORAGE_KEY_LOGGEDIN)
-    return Promise.resolve()
+async function getUsers() {
+    try {
+        return await httpService.get(`user`)
+    } catch (error) {
+        console.log('Could get users')
+    }
 }
 
-function getLoggedinUser() {
-    return JSON.parse(sessionStorage.getItem(STORAGE_KEY_LOGGEDIN))
-}
-
-function _setLoggedinUser(user) {
-    const userToSave = { _id: user._id, fullname: user.fullname, score: user.score }
-    sessionStorage.setItem(STORAGE_KEY_LOGGEDIN, JSON.stringify(userToSave))
-    return userToSave
+function getLoggedInUser() {
+    const entity = sessionStorage.getItem(STORAGE_KEY)
+    return JSON.parse(entity)
 }
 
 function getEmptyCredentials() {
     return {
         username: '',
         password: '',
-        fullname: ''
+        fullname: '',
     }
 }
 
-
-// Test Data
-// userService.signup({username: 'bobo', password: 'bobo', fullname: 'Bobo McPopo'})
-// userService.login({username: 'bobo', password: 'bobo'})
-
-
-
+function _setLoggedInUser(user) {
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(user))
+}
